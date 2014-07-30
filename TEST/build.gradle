@@ -1,0 +1,41 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+
+
+mainClassName = 'Main'
+
+// tag::repositories[]
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+// end::repositories[]
+
+// tag::dependencies[]
+dependencies {
+    compile 'commons-lang:commons-lang:20030203.000129'
+    testCompile 'junit:junit:4.+'
+}
+// end::dependencies[]
+
+task testUnitTests(type: Test) {
+    //include '**/*TestMe.*'
+    include '**/*.class'
+}
+// tag::jar[]
+jar {
+    baseName = 'HelloWorld'
+}
+// end::jar[]
+
+
+// tag::wrapper[]
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}
+// end::wrapper[]
+task runJar(dependsOn:[jar]){
+    ant.java(jar: jar.archivePath ,fork:true)
+}
+
